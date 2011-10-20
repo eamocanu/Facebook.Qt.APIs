@@ -1,0 +1,48 @@
+1. What it is
+
+
+This API is not meant to provide comprehensive methods to access all of facebook's graph functions; rather it is here to compliment existing facebook graph APIs. 
+
+This API allows the ability to upload photos or post photos to walls which existing (as of 2010) facebook APIs for Qt (in C++) do not have.
+There is also support for multiple user management. Multiple users can be logged in using this application. 
+
+The API can be easily extended with other facebook interaction methods either by wrapping existing graph APIs or by adding only what you need.
+
+
+
+2. Some technical documentation
+
+
+a) Facebook interaction methods are thread safe. Due to the nature of how Qt network manager works, messages are sent to facebook one by one. Otherwise when a reply arrives, it is impossible to tell for which message it came. To my knowledge you can't add a unique ID to the message so that facebook will send it back in the reply.
+
+There is a timer thread which will assume the message didn't get to facebook if a reply is not received within some specified time window.
+
+Messages are dequeued only when a reply is received or the time out timer kicks in.
+
+b) Logging in, unfortunately, goes through 3 stages because of how facebook stores data and photos. (1) First you log in (in this case I chose through the browser) and get a token back. Now you are logged in. (2) The API will get user basic profile data and populate a structure (including main profile photo URL). (3) Last step is to get the main profile photo bytes and load that in FBUser struct container. At the end of these stages signals are emitted. In total 3 signals. Last signal emitted is logInFinished() which is the only one you need to listen for. [The other 2 signals are getTextUserDataFinished() and mainPhotoUrlLoaded() which are internal for this API]
+
+c) I created 2 diagrams to help you understand program flow. One for what happens when you login() and one for photoUpload().
+
+
+
+3. TODOs
+
+
+a) Loose coupling and tight cohesion:
+Need a FacebookURL class which will take care of creating the correct URL from paramteres given. This would be used in publishPhoto(), getCurrentUserData(), getMainPhotoUrl() instead of creating the URL right there.
+When facebook changes the URLs it will be easier to localize where it is in the code and adapt it. 
+
+b) Allow logging with your custom logger. 
+This entails creating a logger interface with variations of this method log(string className, string methodName, string message). I'll call this from my code and you implement the methods on your side.
+
+c) Convert FBUser from struct to class so it can do auto memory management: ie: delete the user photo bytes instead of having it done externally
+
+
+																									 4. Running your Qt application with this API
+a) Prior to running the application from your computer you need to download and install SSL (there is a free package).
+
+b) Create a project file to run from Qt (if one is not provided in the repository).
+
+c) Run the simple sample application. Run the slightly more complex sample application. (this one displays all users logged in with their photo in a table)
+
+
