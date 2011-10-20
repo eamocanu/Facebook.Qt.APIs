@@ -1,0 +1,122 @@
+#ifndef FBNetworkRequest_H
+#define FBNetworkRequest_H
+
+/**
+ * Experimental Facebook APIs
+ *
+ * Created by Adrian Mocanu in 2010
+ *
+ * Downloaded from https://github.com/eamocanu/Facebook.Qt.APIs
+ */
+
+#include <QNetworkRequest>
+#include <QByteArray>
+#include <QObject>
+
+
+/* FBNetworkRequest is a wrapper for QNetworkRequest.
+	Additionally it holds data to be sent through POST
+	It also stores the status of sending the request */
+class FBNetworkRequest: public QObject { 
+	Q_OBJECT
+
+
+public:
+	enum SEND_METHOD {POST, GET};
+	enum STATUS {SUCCESS, FAIL};
+	enum REQUEST_TYPE {GET_USER_DATA_REQUEST, PHOTO_UPLOAD, PHOTO_PUBLISH, GET_MAIN_PHOTO, OTHER };
+	
+	#define BASE_URL "https://graph.facebook.com"
+
+
+public:
+	/*  urlPath: path of facebook url
+		sendStatus: will store status of sending this request
+		sendMethod: POST or GET supported at the time */
+	FBNetworkRequest(QString urlPath, STATUS *sendStatus, SEND_METHOD sendMethod=GET);
+	FBNetworkRequest();
+	~FBNetworkRequest(void);
+	
+
+	/* Sets token to be used ONLY with multipart message */
+	void setToken(QString authToken);
+	
+	/* Is to be sent through POST */
+	bool isPost();
+
+	/* Is to be sent through GET */
+	bool isGet();
+
+	/* Result of sending request was successful (or not) */
+	bool isSuccessful();
+
+	/* Set status resulting from sending this request */
+	void setStatus(STATUS newStatus);
+
+	/* Add photo POST data to the request: multipart message */
+	void addPhotoPostData(const QString &token, const QByteArray *postData, const QString &caption);
+
+	/* Add text POST data to the request: non multipart message */
+	void addTextPostData(const QByteArray *postData);
+
+	/* Get POST data used in the request */
+	QByteArray * getPostData();
+
+	/* The network request to piggyback everything being sent */
+	QNetworkRequest * getNetworkRequest();
+
+	/* Set to true: when the reply to this request is a JSON object 
+				false otherwise */
+	void setExpectingJSONReply(bool jsonReply);
+
+	/* Check if reply to request is a JSON object */
+	bool isExpectingJSONReply();
+
+	/* Set request type. This is how the sender knows what to emit.
+		Can send publish requests, photo upload, user data retrieval, etc */
+	void setType(REQUEST_TYPE type);
+
+	/* Returns type of this request */
+	REQUEST_TYPE getType();
+
+	/* Override default URL with user made URL */
+	void setUrl(QString newUrl);
+
+
+private:
+	/* Create post message for uploading photo to facebook 
+		storage: the post message is returned in this stream
+		photoData: photo bytes
+		photoCaption: photo caption
+		*/
+	void createMultipartPostMessage(const QByteArray *photoData, const QString &photoCaption);
+
+	/* Create header for post message with a photo
+		Create header ONLY after message body was created.
+		*/
+	void createMultipartPostMessageHeader();
+
+
+private:
+		
+	//FB URLs
+	#define WALL_PUBLISH_PATH "me/feed"
+	#define WALL_PHOTOS_PATH "me/photos"
+	//#define FRIENDS_PATH "me/friends"
+	#define USER_DATA "me"
+	#define USER_MAIN_PHOTO "me/picture"
+
+	//for multipart post message building
+	#define POST_MSG_BOUNDARY "---------------------------17673466415141"
+
+	REQUEST_TYPE type;
+	bool jsonReply;
+	QByteArray postData;
+	SEND_METHOD sendMethod;
+	STATUS *status;
+	QNetworkRequest request;
+	QString authToken;
+	
+};
+
+#endif
