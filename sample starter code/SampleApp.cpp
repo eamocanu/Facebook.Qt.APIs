@@ -59,14 +59,13 @@ void SampleApp::publishPhoto(){
 
 
 void SampleApp::uploadFinished(){
-/*	if (!face->isPhotoUploadSuccessful()){
+	if (!face->isPhotoUploadSuccessful()){
 		//try again?
 		;
 		qDebug()<<"upload failed" ;
 	} else {
 		qDebug()<<"upload successful" ;
 	}
-	*/
 }
 
 

@@ -19,8 +19,6 @@ private:
 	QString localPhotoPath;
 	//PhotoUploader *photoUploader;
 
-	#define ROOT_URL "http://internal.elacarteonline.com/elc_api/"
-
 private slots:
 	void publishPhoto();
 	void uploadFinished();
