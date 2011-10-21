@@ -3,7 +3,8 @@
  *
  * Created by Adrian M in 2010
  *
- * Downloaded from https://github.com/eamocanu/Facebook.Qt.APIs
+ * Downloaded from https://github.com/eamocanu/Facebook.Qt.APIs/downloads
+ * Git repository https://github.com/eamocanu/Facebook.Qt.APIs
  */
 
 /* Released under the BSD license
