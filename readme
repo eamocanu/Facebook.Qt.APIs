@@ -6,7 +6,7 @@ https://github.com/eamocanu/Facebook.Qt.APIs/downloads
 1. What it is
 
 
-This API is not meant to provide comprehensive methods to access all of facebook's graph functions; rather it is here to compliment existing facebook graph APIs. 
+This API is not meant to provide comprehensive methods to access all of facebook's graph functions; rather it is here to complement existing facebook graph APIs. 
 
 This API allows the ability to upload photos or post photos to walls which existing (as of 2010) facebook APIs for Qt (in C++) do not have.
 There is also support for multiple user management. Multiple users can be logged in using this application. 
@@ -18,13 +18,14 @@ The API can be easily extended with other facebook interaction methods either by
 2. Some technical documentation
 
 
-a) Facebook interaction methods are thread safe. Due to the nature of how Qt network manager works, messages are sent to facebook one by one. Otherwise when a reply arrives, it is impossible to tell for which message it came. To my knowledge you can't add a unique ID to the message so that facebook will send it back in the reply.
+a) Facebook interaction methods are thread safe in the following way: you can call uploadPhoto(..) at the same time that you are calling publishPhoto(..) and it will not create a conflict. All network requests go into a common queue protected with a semaphore. So it's safe to create multiple networks requests in parallel. It's not safe to call the same method in parallel (unless it belongs to another object - basic concurrency fact). Due to the nature of how Qt network manager works, messages are sent to facebook one by one from the afore mentioned queue. Otherwise when a reply arrives, it is impossible to tell for which message it came. To my knowledge you can't add a unique ID to the message so that facebook will send it back in the reply.
 
 There is a timer thread which will assume the message didn't get to facebook if a reply is not received within some specified time window.
 
-Messages are dequeued only when a reply is received or the time out timer kicks in.
+Messages are dequeued only when a reply is received or the timeout timer kicks in.
 
-b) Logging in, unfortunately, goes through 3 stages because of how facebook stores data and photos. (1) First you log in (in this case I chose through the browser) and get a token back. Now you are logged in. (2) The API will get user basic profile data and populate a structure (including main profile photo URL). (3) Last step is to get the main profile photo bytes and load that in FBUser struct container. At the end of these stages signals are emitted. In total 3 signals. Last signal emitted is logInFinished() which is the only one you need to listen for. [The other 2 signals are getTextUserDataFinished() and mainPhotoUrlLoaded() which are internal for this API]
+b) Logging in, unfortunately, goes through 3 stages because of how facebook stores data and photos. (1) First you log in (in this case I chose through the browser) and get a token back. Now you are logged in. (2) The API will get user basic profile data and populate a structure (including main profile photo URL). (3) Last step is to get the main profile photo bytes and load that in FBUser struct container. At the end of these stages signals are emitted. In total 3 signals. Last signal emitted is logInFinished() which is the only one you need to listen for. [The other 2 signals are getTextUserDataFinished() and mainPhotoUrlLoaded() which are internal for this API]. 
+To know when an operation you performed through this API is done, subscribe to its signal. A list of signals is provided in Facebook.h
 
 c) I created 2 diagrams to help you understand program flow. One for what happens when you login() and one for photoUpload().
 
@@ -42,6 +43,8 @@ This entails creating a logger interface with variations of this method log(stri
 
 c) Convert FBUser from struct to class so it can do auto memory management: ie: delete the user photo bytes instead of having it done externally
 
+d) Allow user to specify what kind of permissions they need for their application. Now by default you get: publish_stream, user_photos, read_stream, email. To add or remove permissions see Facebook.h, line 112. I've listed more permissions on line 109.
+
 
 
 4. Running your Qt application with this API
@@ -51,7 +54,8 @@ a) Prior to running the application from your computer you need to download and 
 
 b) Create a project file to run from Qt (if one is not provided in the repository).
 
-c) Run the simple sample application. Run the slightly more complex sample application. (this one displays all users logged in with their photo in a table)
+c) Run the code fom 'sample starter code' which is a simple sample application. 
+Run the slightly more complex sample application from folder 'sample 2 starter code'. (this one displays all users logged in with their photo in a table). This one was rushed so the quality is not great.
 
 
 
