@@ -7,7 +7,7 @@
 
 SampleApp::~SampleApp(){
 	delete face;
-	delete photoUploader;
+//	delete photoUploader;
 }
 
 
