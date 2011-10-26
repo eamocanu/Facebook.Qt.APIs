@@ -1,5 +1,7 @@
 0. Download link: 
 https://github.com/eamocanu/Facebook.Qt.APIs/downloads
+Contact email listed at: https://github.com/eamocanu
+Feel free to use it to email me bugs/requests/problems.
 
 
 
@@ -50,7 +52,7 @@ d) Allow user to specify what kind of permissions they need for their applicatio
 4. Running your Qt application with this API
 
 
-a) Prior to running the application from your computer you need to download and install SSL (there is a free package).
+a) Prior to running the application from your computer you need to download and install SSL (there is a free package: http://www.openssl.org/source/ and for windows binaries: http://www.slproweb.com/products/Win32OpenSSL.html Make sure to also get Visual C++ redistributables package).
 
 b) Create a project file to run from Qt (if one is not provided in the repository).
 
@@ -88,3 +90,11 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of Adrian M.
 
 
+
+6. FIXES this version
+
+fixed the samples so they compile
+documentation: added link to OpenSSL package
+.pro file of 'sample starter code'
+.pro file of 'sample 2 starter code'
+.pro of API. Removed hanging FBUser.cpp which has only header file
