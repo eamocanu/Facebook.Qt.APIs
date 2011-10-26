@@ -1,6 +1,6 @@
 
 #include <QObject>
-#include "PhotoUploader.h"
+//#include "PhotoUploader.h"
 
 //#include "FBUserUI.h"
 #include "FBUser.h"
@@ -31,7 +31,7 @@ public:
 private:
 	Facebook *face;
 	QString localPhotoPath;
-	PhotoUploader *photoUploader;
+	//PhotoUploader *photoUploader;
 
 	QNetworkAccessManager networkManager;
 	UIFBUser fbui;
