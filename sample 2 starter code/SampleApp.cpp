@@ -8,7 +8,7 @@
 
 SampleApp::~SampleApp(){
 	delete face;
-	delete photoUploader;
+//	delete photoUploader;
 	delete window;
 	//delete fbui2;
 	//delete fbui3;
@@ -20,7 +20,7 @@ SampleApp::SampleApp(){
 
 	QString ELC_Application_ID="112189648850879";
 	face= new Facebook (ELC_Application_ID);
-	photoUploader= new PhotoUploader(ROOT_URL);
+//	photoUploader= new PhotoUploader(ROOT_URL);
 
 	connect(face, SIGNAL(logInFinished()), this, SLOT(publishPhoto()));
 	connect(face, SIGNAL(photoUploadFinished()), this, SLOT(uploadFinished()));
