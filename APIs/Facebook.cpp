@@ -284,7 +284,7 @@ void Facebook::urlChanged(const QUrl &qurl){
 void Facebook::parseNetworkReply(QNetworkReply* reply){
 	//Stop timer thread;
 	requestTimer.stop();
-	Facebook::Signal signal;
+	Facebook::Signal signal=0;//init to NULL in case bad data is passed for parsing
 
 	requestListMutex.lock();
 		if (requestQueue.size()<1){
