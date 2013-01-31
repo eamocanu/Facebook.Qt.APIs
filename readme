@@ -1,3 +1,10 @@
+Updates:
+It seems FB made some changes to the name of their permissions so those need to be update in this code [https://github.com/eamocanu/Facebook.Qt.APIs/issues/3].
+
+This code is not supported anymore as of Feb 2013. 
+
+
+
 0. Download link & Info: 
 
 
@@ -5,7 +12,7 @@ Author: Adrian M
 Rar file: https://github.com/eamocanu/Facebook.Qt.APIs/downloads
 Repository: https://github.com/eamocanu/Facebook.Qt.APIs
 Contact email listed at: https://github.com/eamocanu or you can contact me through github
-Feel free to use it to email me bugs/requests/problems.
+This code is not supported anymore as of Feb 2013. 
 Let me know if you use this software so I keep track of it
 Twitter group: coming soon!
 
@@ -82,6 +89,3 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 
-6. FIXES this version
-
-- initialized signal to NULL to avoid crashes due to bad data sent in
